@@ -11,10 +11,10 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests()
                 .antMatchers("/home").permitAll()
-                .anyRequest().authenticated()
-                .and()
-                .oauth2Login()
-                .and()
+                .anyRequest().authenticated().and()
+//                .and()
+//                .oauth2Login()
+//                .and()
                 .logout();
     }
 }
