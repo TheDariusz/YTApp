@@ -32,20 +32,17 @@ public class HomeController {
     @GetMapping("/home/yt")
     public String displaySecuredPage(Model model, @AuthenticationPrincipal OidcUser principal) {
 
-        String url = "https://www.googleapis.com/youtube/v3/channels";
+//        String url = "https://youtube.googleapis.com/youtube/v3/videos?part=snippet%2CcontentDetails%2Cstatistics&myRating=like&key=AIzaSyAv3ju3wpwt_H-Jumks9EJrtfZEKIjX4fQ";
+        String url = "https://www.googleapis.com/youtube/v3/channels?part=snippet&mine=true";
 
-        webClient
+        YtDtoWrapper result = webClient
                 .get()
                 .uri(url)
                 .retrieve()
-                .bodyToMono(new ParameterizedTypeReference<YtDtoWrapper>() {})
+                .bodyToMono(new ParameterizedTypeReference<YtDtoWrapper>() {
+                })
                 .block();
-//        System.out.println("Principal =" + principal);
-//
-//        OidcIdToken idToken = principal.getIdToken();
-//        String tokenValue = idToken.getTokenValue();
-//
-//        System.out.println("Token value = " + tokenValue);
+
         return "yt";
     }
 }
