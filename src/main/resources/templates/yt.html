@@ -8,11 +8,16 @@
 </head>
 <body>
 <h1>
-    Hello stranger!
+    Hello <span th:text="${clientName}"></span>!
 </h1>
 <p>
-    You're logged!
+    You're logged in!
 </p>
+<p>Here it is list of your favorite YT videos:</p>
+
+<span th:each="ytVideo: ${ytWrapper.items()}">
+    <div th:text="${ytVideo.snippet().title()}"></div>
+</span>
 
 </body>
 </html>
