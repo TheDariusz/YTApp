@@ -7,7 +7,7 @@ public record Snippet(
         String channelId,
         String title,
         String description,
-        Thumbnails thumbnail,
+        Thumbnails thumbnails,
         String channelTitle,
         List<String> tags,
         String categoryId,

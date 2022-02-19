@@ -5,7 +5,7 @@ import java.util.List;
 public record YtDtoWrapper(
         String kind,
         String etag,
-        List<YtVideo> ytVideoList,
+        List<YtVideo> items,
         String nextPageToken,
         PageInfo pageInfo
 ) {

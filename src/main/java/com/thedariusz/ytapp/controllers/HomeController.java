@@ -4,7 +4,6 @@ import com.thedariusz.ytapp.model.YtDtoWrapper;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
-import org.springframework.security.oauth2.core.oidc.OidcIdToken;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -32,12 +31,13 @@ public class HomeController {
     @GetMapping("/home/yt")
     public String displaySecuredPage(Model model, @AuthenticationPrincipal OidcUser principal) {
 
-//        String url = "https://youtube.googleapis.com/youtube/v3/videos?part=snippet%2CcontentDetails%2Cstatistics&myRating=like&key=AIzaSyAv3ju3wpwt_H-Jumks9EJrtfZEKIjX4fQ";
-        String url = "https://www.googleapis.com/youtube/v3/channels?part=snippet&mine=true";
+        String url = "https://youtube.googleapis.com/youtube/v3/videos?myRating=like&part=snippet, contentDetails, statistics";
 
         YtDtoWrapper result = webClient
                 .get()
                 .uri(url)
+                .header("Accept","application/json")
+                .header("key" ,"AIzaSyAv3ju3wpwt_H-Jumks9EJrtfZEKIjX4fQ")
                 .retrieve()
                 .bodyToMono(new ParameterizedTypeReference<YtDtoWrapper>() {
                 })
