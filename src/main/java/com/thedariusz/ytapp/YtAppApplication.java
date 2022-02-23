@@ -1,5 +1,6 @@
 package com.thedariusz.ytapp;
 
+import com.thedariusz.ytapp.network.YtApiService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -27,4 +28,8 @@ public class YtAppApplication {
         return WebClient.builder().apply(oauth2.oauth2Configuration()).build();
     }
 
+    @Bean
+    YtApiService ytApiService(WebClient webClient) {
+        return new YtApiService(webClient);
+    }
 }
