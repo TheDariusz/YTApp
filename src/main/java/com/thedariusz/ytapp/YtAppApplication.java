@@ -1,14 +1,17 @@
 package com.thedariusz.ytapp;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.oauth2.client.web.OAuth2AuthorizedClientRepository;
 import org.springframework.security.oauth2.client.web.reactive.function.client.ServletOAuth2AuthorizedClientExchangeFilterFunction;
 import org.springframework.web.reactive.function.client.WebClient;
 
 @SpringBootApplication
+@PropertySource("file:${application_home}/dist/conf/ytapp-config.properties")
 public class YtAppApplication {
 
     public static void main(String[] args) {
@@ -23,4 +26,5 @@ public class YtAppApplication {
         oauth2.setDefaultOAuth2AuthorizedClient(true);
         return WebClient.builder().apply(oauth2.oauth2Configuration()).build();
     }
+
 }
