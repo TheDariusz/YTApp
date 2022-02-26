@@ -4,6 +4,8 @@ import com.thedariusz.ytapp.model.YtDtoWrapper;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.web.reactive.function.client.WebClient;
 
+import java.util.Optional;
+
 public class YtApiService {
 
     final WebClient webClient;
@@ -14,7 +16,7 @@ public class YtApiService {
     }
 
     public YtDtoWrapper fetchYtVideos() {
-        String url = "https://youtube.googleapis.com/youtube/v3/videos?myRating=like&part=snippet, contentDetails, statistics";
+        String url = "https://youtube.googleapis.com/youtube/v3/videos?myRating=like&part=snippet, contentDetails, statistics&maxResults=10";
 
         return webClient
                 .get()

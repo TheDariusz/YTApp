@@ -7,6 +7,7 @@ public record YtDtoWrapper(
         String etag,
         List<YtVideo> items,
         String nextPageToken,
+        String prevPageToken,
         PageInfo pageInfo
 ) {
 }
