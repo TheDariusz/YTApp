@@ -7,11 +7,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import java.util.Optional;
+
 @Controller
-@ConfigurationProperties(prefix = "my.ytapp")
 public class HomeController {
 
-    final YtApiService ytApiService;
+    private final YtApiService ytApiService;
 
     public HomeController(YtApiService ytApiService) {
         this.ytApiService = ytApiService;
@@ -24,6 +25,7 @@ public class HomeController {
 
     @GetMapping("/home/yt")
     public String displaySecuredPage(Model model) {
+        Optional<String> pageToken = Optional.empty();
         YtDtoWrapper ytDtoWrapper = ytApiService.fetchYtVideos();
         model.addAttribute("ytWrapper", ytDtoWrapper);
         return "yt";
