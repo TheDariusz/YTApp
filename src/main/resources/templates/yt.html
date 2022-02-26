@@ -1,0 +1,23 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>YTApp</title>
+</head>
+<body>
+<h1>
+    Hello <span th:text="${clientName}"></span>!
+</h1>
+<p>
+    You're logged in!
+</p>
+<p>Here it is list of your favorite YT videos:</p>
+
+<span th:each="ytVideo, iter: ${ytWrapper.items()}">
+    <div th:text="${ytVideo.snippet().title()}"></div>
+</span>
+
+</body>
+</html>
