@@ -4,8 +4,6 @@ import com.thedariusz.ytapp.model.YtDtoWrapper;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.web.reactive.function.client.WebClient;
 
-import java.util.Optional;
-
 public class YtApiService {
 
     final WebClient webClient;
@@ -15,8 +13,11 @@ public class YtApiService {
         this.webClient = webClient;
     }
 
-    public YtDtoWrapper fetchYtVideos() {
-        String url = "https://youtube.googleapis.com/youtube/v3/videos?myRating=like&part=snippet, contentDetails, statistics&maxResults=10";
+    public YtDtoWrapper fetchYtVideos(String pageToken) {
+        String url = "https://youtube.googleapis.com/youtube/v3/videos?myRating=like&part=snippet, contentDetails, statistics&maxResults=50";
+        if (pageToken != null) {
+            url= "%s&pageToken=%s".formatted(url, pageToken);
+        }
 
         return webClient
                 .get()
