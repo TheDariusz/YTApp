@@ -13,6 +13,7 @@ import java.util.Optional;
 @Controller
 public class HomeController {
 
+    private static final String EMPTY_PAGE_TOKEN = "";
     private final YtApiService ytApiService;
 
     public HomeController(YtApiService ytApiService) {
@@ -33,7 +34,7 @@ public class HomeController {
 
     @GetMapping(value = {"/home/yt"})
     public String displaySecuredPageWithToken(Model model) {
-        YtDtoWrapper ytDtoWrapper = ytApiService.fetchYtVideos(null);
+        YtDtoWrapper ytDtoWrapper = ytApiService.fetchYtVideos(EMPTY_PAGE_TOKEN);
         model.addAttribute("ytWrapper", ytDtoWrapper);
         return "yt";
     }

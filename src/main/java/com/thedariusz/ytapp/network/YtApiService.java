@@ -15,9 +15,7 @@ public class YtApiService {
 
     public YtDtoWrapper fetchYtVideos(String pageToken) {
         String url = "https://youtube.googleapis.com/youtube/v3/videos?myRating=like&part=snippet, contentDetails, statistics&maxResults=50";
-        if (pageToken != null) {
-            url= "%s&pageToken=%s".formatted(url, pageToken);
-        }
+        url= "%s&pageToken=%s".formatted(url, pageToken);
 
         return webClient
                 .get()
