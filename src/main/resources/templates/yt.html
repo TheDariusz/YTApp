@@ -6,6 +6,7 @@
     <meta charset="UTF-8">
     <title>YTApp</title>
 </head>
+
 <body>
 <h1>
     Hello <span th:text="${clientName}"></span>!
@@ -16,8 +17,47 @@
 <p>Here it is list of your favorite YT videos:</p>
 
 <span th:each="ytVideo, iter: ${ytWrapper.items()}">
-    <div th:text="${ytVideo.snippet().title()}"></div>
+    <div th:text="${ytVideo.snippet().title()}" th:id="${iter.index}" class="ytVideo"></div>
 </span>
+<div id="hidden" hidden>0</div>
+<button onclick="showElementsFromXtoY(5)">show next 5 elements</button>
+<p>
+<span th:if="${ytWrapper.prevPageToken()!=null}">
+    <a th:href="'/home/yt/'+${ytWrapper.prevPageToken()}" id="getPrevVideos">show prev videos</a>
+</span>
+<span>
+    <a th:href="'/home/yt/'+${ytWrapper.nextPageToken()}" id="getNextVideos">get next videos</a>
+</span>
+</p>
 
+
+
+<script>
+    let ytVideos = document.getElementsByClassName("ytVideo");
+    const getNextVideos = document.getElementById("getNextVideos");
+    getNextVideos.style.display="none";
+
+    for (const ytVideo of ytVideos) {
+        ytVideo.style.display="none"
+    }
+    showElementsFromXtoY(5)
+
+    function showElementsFromXtoY(y) {
+        let startIndex = parseInt(document.getElementById("hidden").innerText)
+
+        for (let i = startIndex; i < y+startIndex; i++) {
+            const x = document.getElementById(i);
+            if(x===null) {
+                getNextVideos.style.display="block";
+                return;
+            }
+            x.style.display = "block";
+        }
+        startIndex += y;
+        document.getElementById("hidden").innerText=startIndex
+    }
+
+</script>
 </body>
+
 </html>
