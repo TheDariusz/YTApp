@@ -1,5 +1,6 @@
 package com.thedariusz.ytapp.network;
 
+import com.thedariusz.ytapp.model.UserDtoWrapper;
 import com.thedariusz.ytapp.model.YtDtoWrapper;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
@@ -28,6 +29,18 @@ public class YoutubeWebClient {
                 .accept(MediaType.APPLICATION_JSON)
                 .retrieve()
                 .bodyToMono(YtDtoWrapper.class)
+                .block();
+    }
+
+
+    public UserDtoWrapper fetchUserInfo() {
+        String url = "https://www.googleapis.com/oauth2/v3/userinfo";
+        return webClient
+                .method(HttpMethod.GET)
+                .uri(url)
+                .accept(MediaType.APPLICATION_JSON)
+                .retrieve()
+                .bodyToMono(UserDtoWrapper.class)
                 .block();
     }
 }

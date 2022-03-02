@@ -1,5 +1,6 @@
 package com.thedariusz.ytapp.controllers;
 
+import com.thedariusz.ytapp.model.UserDtoWrapper;
 import com.thedariusz.ytapp.model.YtDtoWrapper;
 import com.thedariusz.ytapp.network.YoutubeWebClient;
 import org.springframework.stereotype.Controller;
@@ -32,6 +33,7 @@ public class HomeController {
     @GetMapping(value = {"/home/yt"})
     public String displaySecuredPageWithToken(Model model) {
         YtDtoWrapper ytDtoWrapper = youtubeWebClient.fetchYtVideos(EMPTY_PAGE_TOKEN);
+        UserDtoWrapper userDtoWrapper = youtubeWebClient.fetchUserInfo();
         model.addAttribute("ytWrapper", ytDtoWrapper);
         return "yt";
     }
