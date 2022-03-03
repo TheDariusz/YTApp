@@ -6,8 +6,13 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
+import org.springframework.test.context.ActiveProfiles;
+
+import static io.restassured.RestAssured.*;
+import static org.hamcrest.Matchers.*;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@ActiveProfiles("test")
 class HomeControllerIT {
 
     @LocalServerPort
@@ -15,36 +20,16 @@ class HomeControllerIT {
 
     @BeforeEach
     public final void setup() {
-        RestAssured.port = randomPort;
+        port = randomPort;
     }
-
-    String HOME_PAGE = """
-            <html lang="en">
-              <head>
-                <meta charset="UTF-8"/>
-                <title>YTApp</title>
-              </head>
-              <body>
-                <h1>
-                Hello stranger!
-            </h1>
-                <p>
-                Click link below if you want to login
-            </p>
-                <a shape="rect" href="/home/yt">
-                secret page
-            </a>
-              </body>
-            </html>
-            """;
 
     @Test
     void shouldReturnValidPage() {
-        RestAssured.given()
+        given()
                 .when()
                 .get("/home")
                 .then()
                 .statusCode(200)
-                .body(Matchers.is(HOME_PAGE));
+                .body(containsString("Click link below if you want to login"));
     }
 }
