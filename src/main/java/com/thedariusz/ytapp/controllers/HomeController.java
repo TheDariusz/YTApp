@@ -15,7 +15,7 @@ public class HomeController {
 
     private static final String EMPTY_PAGE_TOKEN = "";
     private final YoutubeWebClient youtubeWebClient;
-
+    private UserDtoWrapper userDtoWrapper;
 
     public HomeController(YoutubeWebClient youtubeWebClient) {
         this.youtubeWebClient = youtubeWebClient;
@@ -28,23 +28,24 @@ public class HomeController {
 
     @GetMapping(value = {"/home/yt/{pageToken}"})
     public String displaySecuredPageWithToken(Model model, @PathVariable String pageToken) {
-        YtDtoWrapper ytDtoWrapper = youtubeWebClient.fetchYtVideos(pageToken);
-        UserDtoWrapper userDtoWrapper = youtubeWebClient.fetchUserInfo();
-        model.addAttribute("userInfo", userDtoWrapper);
-        model.addAttribute("ytWrapper", ytDtoWrapper);
+        model.addAttribute("ytWrapper", youtubeWebClient.fetchYtVideos(pageToken));
+        if (userDtoWrapper!=null) {
+            model.addAttribute("userInfo", userDtoWrapper);
+        }
         return "yt";
     }
 
     @GetMapping(value = {"/home/yt"})
     public String displaySecuredPageWithToken(Model model, @AuthenticationPrincipal OidcUser principal) {
-        String userEmail = principal.getEmail();
-        YtDtoWrapper ytDtoWrapper = youtubeWebClient.fetchYtVideos(EMPTY_PAGE_TOKEN);
-        UserDtoWrapper userDtoWrapper = youtubeWebClient.fetchUserInfo();
-        model.addAttribute("ytWrapper", ytDtoWrapper);
-        model.addAttribute("userInfo", userDtoWrapper);
+        model.addAttribute("ytWrapper", youtubeWebClient.fetchYtVideos(EMPTY_PAGE_TOKEN));
+        userDtoWrapper = youtubeWebClient.fetchUserInfo();
+        if (userDtoWrapper!=null) {
+            model.addAttribute("userInfo", userDtoWrapper);
+        }
+        model.addAttribute("userEmail", principal.getEmail());
+
         return "yt";
     }
-
 
 
 

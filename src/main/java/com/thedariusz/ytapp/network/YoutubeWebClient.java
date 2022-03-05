@@ -3,8 +3,10 @@ package com.thedariusz.ytapp.network;
 import com.thedariusz.ytapp.model.UserDtoWrapper;
 import com.thedariusz.ytapp.model.YtDtoWrapper;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Mono;
 
 public class YoutubeWebClient {
 
@@ -28,6 +30,7 @@ public class YoutubeWebClient {
                 )
                 .accept(MediaType.APPLICATION_JSON)
                 .retrieve()
+                .onStatus(HttpStatus::is4xxClientError, error -> Mono.error(new RuntimeException("BAD REQUEST!")))
                 .bodyToMono(YtDtoWrapper.class)
                 .block();
     }
