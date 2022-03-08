@@ -11,7 +11,6 @@ import reactor.core.publisher.Mono;
 public class YoutubeWebClient {
 
     final WebClient webClient;
-    private String apiKey;
 
     public YoutubeWebClient(WebClient webClient) {
         this.webClient = webClient;

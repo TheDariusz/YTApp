@@ -23,10 +23,10 @@
 <button onclick="showElementsFromXtoY(5)">show next 5 elements</button>
 <p>
 <span th:if="${ytWrapper.prevPageToken()!=null}">
-    <a th:href="'/home/yt/'+${ytWrapper.prevPageToken()}" id="getPrevVideos">show prev videos</a>
+    <a th:href="'/home/yt?page='+${ytWrapper.prevPageToken()}" id="getPrevVideos">show prev videos</a>
 </span>
 <span>
-    <a th:href="'/home/yt/'+${ytWrapper.nextPageToken()}" id="getNextVideos">get next videos</a>
+    <a th:href="'/home/yt?page='+${ytWrapper.nextPageToken()}" id="getNextVideos">get next videos</a>
 </span>
 </p>
 
