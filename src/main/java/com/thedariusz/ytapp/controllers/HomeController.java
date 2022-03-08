@@ -26,6 +26,7 @@ public class HomeController {
     public String displaySecuredPageWithToken(Model model, @AuthenticationPrincipal OidcUser principal, @RequestParam(required = false, name = "page") String pageToken) {
         model.addAttribute("userInfo", youtubeWebClient.fetchUserInfo());
         model.addAttribute("ytWrapper", youtubeWebClient.fetchYtVideos(pageToken));
+        model.addAttribute("email", principal.getEmail());
         return "yt";
     }
 
