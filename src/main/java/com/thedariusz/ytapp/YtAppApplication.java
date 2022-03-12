@@ -1,11 +1,12 @@
 package com.thedariusz.ytapp;
 
 import com.thedariusz.ytapp.network.YoutubeWebClient;
+import com.thedariusz.ytapp.repository.YtFileHandler;
+import com.thedariusz.ytapp.service.YtVideoService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.oauth2.client.web.OAuth2AuthorizedClientRepository;
 import org.springframework.security.oauth2.client.web.reactive.function.client.ServletOAuth2AuthorizedClientExchangeFilterFunction;
@@ -47,5 +48,15 @@ public class YtAppApplication {
 
         oauth2.setDefaultOAuth2AuthorizedClient(true);
         return oauth2;
+    }
+
+    @Bean
+    YtFileHandler ytFileHandler() {
+        return new YtFileHandler();
+    }
+
+    @Bean
+    YtVideoService ytVideoService(YtFileHandler fileHandler) {
+        return new YtVideoService(fileHandler);
     }
 }

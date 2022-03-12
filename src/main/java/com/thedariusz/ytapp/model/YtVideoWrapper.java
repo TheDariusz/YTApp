@@ -1,6 +1,6 @@
 package com.thedariusz.ytapp.model;
 
-public record YtVideo(
+public record YtVideoWrapper(
         String kind,
         String etag,
         String id,
