@@ -11,10 +11,9 @@ public class YtFileHandler implements YtVideoDao {
     public void saveYtVideos(List<YtVideoEntity> videos) {
         String fileName = "yt.videos.db.txt";
         Path path = Path.of(fileName);
-
         videos.forEach(v -> {
             try {
-                Files.writeString(path, v.title(), StandardOpenOption.CREATE, StandardOpenOption.APPEND);
+                Files.writeString(path, v.title()+"\n", StandardOpenOption.CREATE, StandardOpenOption.APPEND);
             } catch (IOException e) {
                 e.printStackTrace();
             }
