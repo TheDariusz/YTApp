@@ -9,13 +9,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class YtVideoMapper {
-    public List<YtVideoEntity> toEntity(List<YtVideoWrapper> videos) {
-        List<YtVideoEntity> ytVideoEntities = new ArrayList<>();
+    public List<YtVideoModel> toEntity(List<YtVideoWrapper> videos) {
+        List<YtVideoModel> ytVideoEntities = new ArrayList<>();
 
         videos.forEach(video -> {
             Snippet snippet = video.snippet();
             ytVideoEntities.add(
-                    new YtVideoEntity(
+                    new YtVideoModel(
                             video.id(),
                             OffsetDateTime.parse(snippet.publishedAt()),
                             snippet.channelId(),

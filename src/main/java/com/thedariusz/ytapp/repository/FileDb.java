@@ -3,31 +3,52 @@ package com.thedariusz.ytapp.repository;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.StandardOpenOption;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class FileDb {
-    private static final FileDb instance = new FileDb();
-    private static final String PATH = "yt.videos.db.txt";
+    private static Path path;
+    private static String header;
 
-    private FileDb() {
+    public FileDb() {
     }
 
-    public static FileDb getInstance() {
-        return instance;
+    public FileDb(String newPath) {
+        setPath(newPath);
     }
 
-    public String getPath() {
-        return PATH;
+    public static void setPath(String newPath) {
+        if (path == null && !newPath.isEmpty()) {
+            path = Path.of(newPath);
+        }
     }
 
-    public void writeLines(List<String> stringList) throws IOException {
-        byte[] bytes = stringList.stream().collect(Collectors.joining("\n")).getBytes();
-        Files.write(Path.of(PATH), bytes);
+    public static String getPath() {
+        return path.toString();
     }
 
-    public List<String> readLines() throws IOException {
-        return Files.readAllLines(Path.of(PATH));
+    public static String getHeader() {
+        return header;
     }
 
+    public static void writeHeader(String newHeader) throws IOException {
+        if (header == null && !newHeader.isEmpty()) {
+            header = newHeader;
+        }
+        writeToFile(newHeader);
+    }
+
+    public static void writeToFile(List<String> stringList) throws IOException {
+        byte[] bytes = String.join("\n", stringList).getBytes();
+        Files.write(path, bytes, StandardOpenOption.CREATE, StandardOpenOption.APPEND);
+    }
+
+    public static void writeToFile(String line) throws IOException {
+        byte[] bytes = String.join("\n", line).getBytes();
+        Files.write(path, bytes, StandardOpenOption.CREATE, StandardOpenOption.APPEND);
+    }
+
+    public List<String> readFromFile() throws IOException {
+        return Files.readAllLines(path);
+    }
 }

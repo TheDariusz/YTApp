@@ -2,6 +2,7 @@ package com.thedariusz.ytapp.repository;
 
 import com.thedariusz.ytapp.model.YtVideoWrapper;
 
+import java.io.IOException;
 import java.util.List;
 
 public interface YtVideoDao {
@@ -10,7 +11,7 @@ public interface YtVideoDao {
         return null;
     }
 
-    void saveYtVideos(List<YtVideoEntity> videos);
+    void saveYtVideos(List<YtVideoModel> videos) throws IOException;
 
     default YtVideoWrapper readYtVideo() {
         return null;

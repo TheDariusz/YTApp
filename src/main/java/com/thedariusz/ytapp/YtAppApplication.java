@@ -1,6 +1,7 @@
 package com.thedariusz.ytapp;
 
 import com.thedariusz.ytapp.network.YoutubeWebClient;
+import com.thedariusz.ytapp.repository.FileDb;
 import com.thedariusz.ytapp.repository.YtFileHandler;
 import com.thedariusz.ytapp.service.YtVideoService;
 import org.springframework.beans.factory.annotation.Value;
@@ -58,5 +59,10 @@ public class YtAppApplication {
     @Bean
     YtVideoService ytVideoService(YtFileHandler fileHandler) {
         return new YtVideoService(fileHandler);
+    }
+
+    @Bean
+    FileDb fileDb() {
+        return new FileDb();
     }
 }

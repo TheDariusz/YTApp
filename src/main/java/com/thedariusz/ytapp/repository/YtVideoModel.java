@@ -4,7 +4,7 @@ import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-public record YtVideoEntity(
+public record YtVideoModel(
     String id,
     OffsetDateTime publishedAt,
     String channelId,
