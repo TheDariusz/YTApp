@@ -9,6 +9,7 @@ import java.util.List;
 public class FileDb {
     private static Path path;
     private static String header;
+    private static final String NEW_LINE = "\n";
 
     public FileDb() {
     }
@@ -39,16 +40,13 @@ public class FileDb {
     }
 
     public static void writeToFile(List<String> stringList) throws IOException {
-        byte[] bytes = String.join("\n", stringList).getBytes();
+
+        byte[] bytes = String.join(NEW_LINE, stringList).concat(NEW_LINE).getBytes();
         Files.write(path, bytes, StandardOpenOption.CREATE, StandardOpenOption.APPEND);
     }
 
     public static void writeToFile(String line) throws IOException {
-        byte[] bytes = String.join("\n", line).getBytes();
+        byte[] bytes = String.join(NEW_LINE, line).concat(NEW_LINE).getBytes();
         Files.write(path, bytes, StandardOpenOption.CREATE, StandardOpenOption.APPEND);
-    }
-
-    public List<String> readFromFile() throws IOException {
-        return Files.readAllLines(path);
     }
 }

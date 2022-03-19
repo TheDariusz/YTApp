@@ -13,40 +13,34 @@ import static org.junit.Assert.assertThrows;
 class FileUtilsTest {
 
     @Test
-    void isWrappedWithChar() throws FileUtils.FileUtilsException {
+    void isWrappedWithChar() {
         String sentence = "alamakota kot ma ale";
-        String sign = "\"";
-        String result = FileUtils.wrapWithChar(sentence, sign);
+        String result = FileUtils.wrapString(sentence);
         assertThat(result, is("\"alamakota kot ma ale\""));
     }
 
     @Test
-    void wrapperThrowsException() throws FileUtils.FileUtilsException {
-        String sentence = "alamakota kot ma ale";
-        String sign = "";
-        Throwable exception = assertThrows(FileUtils.FileUtilsException.class, () -> FileUtils.wrapWithChar(sentence, sign));
-        Assertions.assertEquals("A string cannot be wrapped! An empty wrapper or a sentence!", exception.getMessage());
+    void wrapperNullStringShouldReturnAnEmptyString() {
+        String sentence = null;
+        String result = FileUtils.wrapString(sentence);
+        assertThat(result, is(""));
     }
 
     @Test
     void areConcatenatedWithSemicolonAndQuote() throws FileUtils.FileUtilsException {
         List<String> strings = List.of("Ala ma kota", "Kot ma ale", "Jest im dobrze");
-        String separator = ";";
-        String wrapper = "\"";
         String result = "\"Ala ma kota\";\"Kot ma ale\";\"Jest im dobrze\"";
 
-        String expected = FileUtils.wrapAndConcatenate(strings, separator, wrapper);
+        String expected = FileUtils.wrapAndConcatenate(strings);
         System.out.println(expected);
         Assertions.assertEquals(expected, result);
     }
 
     @Test
-    void tryingConcatenateStringsThrowsException() {
-        List<String> strings = List.of("Ala ma kota", "Kot ma ale", "Jest im dobrze");
-        String separator = "";
-        String wrapper = "\"";
+    void tryingConcatenateEmptyListThrowsException() {
+        List<String> strings = List.of();
         Throwable exception = assertThrows(FileUtils.FileUtilsException.class, () ->
-                FileUtils.wrapAndConcatenate(strings, separator, wrapper));
-        Assertions.assertEquals("A separator cannot be empty!", exception.getMessage());
+                FileUtils.wrapAndConcatenate(strings));
+        Assertions.assertEquals("An empty list!", exception.getMessage());
     }
 }

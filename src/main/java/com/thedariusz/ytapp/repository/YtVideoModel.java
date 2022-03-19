@@ -10,7 +10,6 @@ public record YtVideoModel(
     String channelId,
     String channelTitle,
     String title,
-    String description,
     String defaultThumbnailUrl,
     int categoryId,
     Duration duration,

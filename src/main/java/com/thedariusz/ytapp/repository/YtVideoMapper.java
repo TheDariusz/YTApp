@@ -21,7 +21,6 @@ public class YtVideoMapper {
                             snippet.channelId(),
                             snippet.channelTitle(),
                             snippet.channelTitle(),
-                            snippet.description(),
                             snippet.thumbnails().defaulted().url(),
                             Integer.parseInt(snippet.categoryId()),
                             Duration.parse(video.contentDetails().duration()),
