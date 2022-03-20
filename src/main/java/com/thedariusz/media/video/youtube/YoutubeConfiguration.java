@@ -1,29 +1,26 @@
-package com.thedariusz.ytapp;
+package com.thedariusz.media.video.youtube;
 
-import com.thedariusz.ytapp.network.YoutubeWebClient;
+import com.thedariusz.media.video.VideoService;
+import com.thedariusz.media.video.repository.VideoDao;
+import com.thedariusz.media.video.repository.VideoFileDatabase;
+import com.thedariusz.media.video.repository.CsvFileWriter;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.oauth2.client.web.OAuth2AuthorizedClientRepository;
 import org.springframework.security.oauth2.client.web.reactive.function.client.ServletOAuth2AuthorizedClientExchangeFilterFunction;
 import org.springframework.web.reactive.function.client.ExchangeStrategies;
 import org.springframework.web.reactive.function.client.WebClient;
 
-@SpringBootApplication
-public class YtAppApplication {
-
-    public static void main(String[] args) {
-        SpringApplication.run(YtAppApplication.class, args);
-    }
+@Configuration
+public class YoutubeConfiguration {
 
     @Bean
-    YoutubeWebClient ytApiService(ClientRegistrationRepository clientRegistrationRepository,
-                                  OAuth2AuthorizedClientRepository oAuth2AuthorizedClientRepository,
-                                  @Value("${my.ytapp.apiKey}") String apiKey,
-                                  @Value("${my.ytapp.baseUrl}") String baseUrl) {
+    VideoClient videoClient(ClientRegistrationRepository clientRegistrationRepository,
+                            OAuth2AuthorizedClientRepository oAuth2AuthorizedClientRepository,
+                            @Value("${my.ytapp.apiKey}") String apiKey,
+                            @Value("${my.ytapp.baseUrl}") String baseUrl) {
 
         final int size = 16 * 1024 * 1024;
         final ExchangeStrategies strategies = ExchangeStrategies.builder()
@@ -37,7 +34,7 @@ public class YtAppApplication {
                 .defaultHeader("key", apiKey)
                 .build();
 
-        return new YoutubeWebClient(webClient);
+        return new VideoClient(webClient);
     }
 
     private ServletOAuth2AuthorizedClientExchangeFilterFunction oauth2(ClientRegistrationRepository clientRegistrationRepository,
@@ -47,5 +44,15 @@ public class YtAppApplication {
 
         oauth2.setDefaultOAuth2AuthorizedClient(true);
         return oauth2;
+    }
+
+    @Bean
+    VideoDao videFileDatabase(CsvFileWriter fileWriter) {
+        return new VideoFileDatabase(fileWriter);
+    }
+
+    @Bean
+    VideoService videoService(VideoDao fileHandler) {
+        return new VideoService(fileHandler);
     }
 }

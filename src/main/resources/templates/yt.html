@@ -9,24 +9,24 @@
 
 <body>
 <h1>
-    Hello <span th:text="${clientName}"></span>!
+    Hello <span th:text="${userInfo.name()}"></span>!
 </h1>
 <p>
-    You're logged in!
+    You're logged in as <span th:text="${email}"></span>
 </p>
 <p>Here it is list of your favorite YT videos:</p>
 
-<span th:each="ytVideo, iter: ${ytWrapper.items()}">
+<span th:each="ytVideo, iter: ${video.items()}">
     <div th:text="${ytVideo.snippet().title()}" th:id="${iter.index}" class="ytVideo"></div>
 </span>
 <div id="hidden" hidden>0</div>
 <button onclick="showElementsFromXtoY(5)">show next 5 elements</button>
 <p>
-<span th:if="${ytWrapper.prevPageToken()!=null}">
-    <a th:href="'/home/yt/'+${ytWrapper.prevPageToken()}" id="getPrevVideos">show prev videos</a>
+<span th:if="${video.prevPageToken()!=null}">
+    <a th:href="'/home/yt?page='+${video.prevPageToken()}" id="getPrevVideos">show prev videos</a>
 </span>
 <span>
-    <a th:href="'/home/yt/'+${ytWrapper.nextPageToken()}" id="getNextVideos">get next videos</a>
+    <a th:href="'/home/yt?page='+${video.nextPageToken()}" id="getNextVideos">get next videos</a>
 </span>
 </p>
 
