@@ -2,14 +2,16 @@ name: CI pipeline
 
 on:
   push:
-    branches: [ master ]
+    branches: [ main ]
   pull_request:
-    branches: [ master ]
+    branches: [ main ]
   workflow_dispatch:
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      DOCKER_IMAGE_NAME: thebrotherscode/tbc-repository/media-app
 
     steps:
       - uses: actions/checkout@v2
@@ -24,3 +26,13 @@ jobs:
 
       - name: Package
         run: ./mvnw package
+
+      - name: Build Docker image
+        if: github.ref == 'refs/heads/main'
+        run: |
+          ./mvnw package
+          docker build . -t ${DOCKER_IMAGE_NAME}:${GITHUB_SHA::7}
+
+      - name: Publish Docker image
+        if: github.ref == 'refs/heads/main'
+        run: docker push ${DOCKER_IMAGE_NAME}:${GITHUB_SHA::7}
