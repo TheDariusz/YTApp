@@ -13,8 +13,20 @@ jobs:
     name: Setup Gcloud Account
     runs-on: ubuntu-latest
     env:
-      IMAGE_NAME: gcr.io/${{ secrets.GCP_PROJECT_ID }}/${{ secrets.GCP_APP_NAME }}
+      IMAGE_NAME: gcr.io/${{ secrets.GCP_PROJECT_ID }}/ytapp
     steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up JDK
+        uses: actions/setup-java@v1
+        with:
+          java-version: 17
+
+      - name: Test
+        run: ./mvnw verify
+
+      - name: Package
+        run: ./mvnw package
 
       - name: Login
         uses: google-github-actions/setup-gcloud@v0
