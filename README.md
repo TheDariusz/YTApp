@@ -23,7 +23,7 @@ JDK 17, Docker, Thymeleaf, Spring-Boot
 todo
 
 ### Production environment
-todo 
+Google Cloud Platform
 
 # Technical debt / TODO
 - [ ] Spotify API handling
