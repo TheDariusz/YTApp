@@ -30,7 +30,7 @@ public class VideoController {
                                                     @RequestParam(required = false, name = "page") String pageToken) {
 
         VideoResponse videoResponse = videoClient.fetchVideos(pageToken);
-        youtubeService.save(videoResponse);
+//        youtubeService.save(videoResponse);
 
         Map<String, Object> modelMap = Map.of(
                 "userInfo", videoClient.fetchUserInfo(),
