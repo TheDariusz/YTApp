@@ -22,9 +22,6 @@ jobs:
         with:
           java-version: 17
 
-      - name: Test
-        run: ./mvnw verify
-
       - name: Package
         run: ./mvnw package
 
@@ -45,11 +42,26 @@ jobs:
         run: ./mvnw package -P prod
 
       - name: Build Docker image
-        run: |
-          docker build . -t $IMAGE_NAME
+        run: docker build . -t $IMAGE_NAME
 
       - name: Push Docker image
         run: docker push $IMAGE_NAME
+
+      - name: Auth
+        uses: google-github-actions/auth@v0
+        with:
+          credentials_json: ${{ secrets.GCP_CREDENTIALS }}
+
+      - id: secrets
+        uses: google-github-actions/get-secretmanager-secrets@v0
+        with:
+          secrets: |-
+            client-id:projects/77751131303/secrets/client-id
+            client-secret:projects/77751131303/secrets/client-secret
+            api-key:projects/77751131303/secrets/api-key
+            
+      - name: test me
+        run: echo ${{ steps.secrets.outputs.api-key }}
 
       - name: Deploy Docker image
         run: |
@@ -58,7 +70,6 @@ jobs:
           --region us-central1 \
           --platform managed \
           --set-env-vars SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_GOOGLE_REDIRECT-URI=https://ytapp-339922-crzmcsu6ea-uc.a.run.app/login/oauth2/code/google \
-          --set-env-vars SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_GOOGLE_CLIENT-ID=sm://client-id \
-          --set-env-vars SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_GOOGLE_CLIENT-SECRET=sm://client-secret \
-          --set-env-vars MY_YTAPP_APIKEY=sm://api-key
-          
+          --set-env-vars SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_GOOGLE_CLIENT-ID=${{ steps.secrets.outputs.client-id }} \
+          --set-env-vars SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_GOOGLE_CLIENT-SECRET=${{ steps.secrets.outputs.client-secret }} \
+          --set-env-vars MY_YTAPP_APIKEY=${{ steps.secrets.outputs.api-key }}
