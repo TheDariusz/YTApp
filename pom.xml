@@ -19,8 +19,6 @@
     <properties>
         <java.version>17</java.version>
         <rest-assured.version>4.5.1</rest-assured.version>
-        <spring-cloud.version>2021.0.1</spring-cloud.version>
-        <spring-cloud-gcp.version>2.0.0</spring-cloud-gcp.version>
     </properties>
     
     <dependencies>
@@ -40,17 +38,6 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-webflux</artifactId>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/org.springframework.cloud/spring-cloud-gcp-starter -->
-        <dependency>
-            <groupId>com.google.cloud</groupId>
-            <artifactId>spring-cloud-gcp-starter</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>com.google.cloud</groupId>
-            <artifactId>spring-cloud-gcp-starter-secretmanager</artifactId>
-        </dependency>
-
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -89,6 +76,7 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
+
     <build>
         <finalName>media-app</finalName>
         <plugins>
@@ -99,4 +87,25 @@
         </plugins>
     </build>
 
+    <profiles>
+        <profile>
+            <id>prod</id>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+            </activation>
+
+
+            <dependencies>
+                <dependency>
+                    <groupId>com.google.cloud</groupId>
+                    <artifactId>spring-cloud-gcp-starter</artifactId>
+                </dependency>
+
+                <dependency>
+                    <groupId>com.google.cloud</groupId>
+                    <artifactId>spring-cloud-gcp-starter-secretmanager</artifactId>
+                </dependency>
+            </dependencies>
+        </profile>
+    </profiles>
 </project>

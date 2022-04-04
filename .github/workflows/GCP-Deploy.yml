@@ -25,9 +25,6 @@ jobs:
       - name: Test
         run: ./mvnw verify
 
-      - name: Package
-        run: ./mvnw package
-
       - name: Login
         uses: google-github-actions/setup-gcloud@v0
         with:
@@ -43,7 +40,8 @@ jobs:
 
       - name: Build Docker image
         run: |
-          ./mvnw package
+          ./mvnw package -P prod \
+          -DSPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_GOOGLE_REDIRECT-URI=https://ytapp-339922-crzmcsu6ea-uc.a.run.app/login/oauth2/code/google \
           docker build . -t $IMAGE_NAME
 
       - name: Push Docker image
