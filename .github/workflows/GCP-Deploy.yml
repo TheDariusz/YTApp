@@ -43,7 +43,7 @@ jobs:
 
       - name: Build Docker image
         run: |
-          ./mvnw package -P prod -DSPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_GOOGLE_REDIRECT-URI="https://ytapp-339922-crzmcsu6ea-uc.a.run.app/login/oauth2/code/google" \
+          ./mvnw package
           docker build . -t $IMAGE_NAME
 
       - name: Push Docker image
