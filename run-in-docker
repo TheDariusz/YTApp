@@ -3,11 +3,10 @@
 set -x
 set -e
 
-./mvnw clean package -P quick
-docker rm -f signup2
-docker build . -t signup2:latest
+./mvnw clean package -P prod -DSPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_GOOGLE_REDIRECT-URI=https://ytapp-339922-crzmcsu6ea-uc.a.run.app/login/oauth2/code/google
+docker rm -f ytapp
+docker build . -t ytapp:latest
 docker run -p 8081:8080 -p 8082:8081 \
-        --network ebiz-signup2_default \
-        --name signup2 \
+        --name ytapp \
         --memory="1G" \
-        signup2:latest
+        ytapp:latest
