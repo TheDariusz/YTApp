@@ -25,6 +25,9 @@ jobs:
       - name: Test
         run: ./mvnw verify
 
+      - name: Package
+        run: ./mvnw package
+
       - name: Login
         uses: google-github-actions/setup-gcloud@v0
         with:
