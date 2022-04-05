@@ -79,7 +79,7 @@ jobs:
           --image $IMAGE_NAME \
           --region europe-west1 \
           --platform managed \
-          --set-env-vars SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_GOOGLE_REDIRECT-URI=https://ytapp-339922-crzmcsu6ea-uc.a.run.app/login/oauth2/code/google \
+          --set-env-vars SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_GOOGLE_REDIRECT-URI=https://ytapp-339922-crzmcsu6ea-ew.a.run.app/login/oauth2/code/google \
           --set-env-vars SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_GOOGLE_CLIENT-ID=${{ steps.secrets.outputs.client-id }} \
           --set-env-vars SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_GOOGLE_CLIENT-SECRET=${{ steps.secrets.outputs.client-secret }} \
           --set-env-vars MY_YTAPP_APIKEY=${{ steps.secrets.outputs.api-key }}
