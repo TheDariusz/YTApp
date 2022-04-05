@@ -29,6 +29,7 @@ jobs:
         run: ./mvnw package
 
       - name: Login
+        if: github.ref == 'refs/heads/main'
         uses: google-github-actions/setup-gcloud@v0
         with:
           project_id: ${{ secrets.GCP_PROJECT_ID }}
@@ -36,21 +37,27 @@ jobs:
           service_account_key: ${{ secrets.GCP_CREDENTIALS }}
 
       - name: Configure Docker
+        if: github.ref == 'refs/heads/main'
         run: gcloud auth configure-docker --quiet
 
       - name: Checkout repository
+        if: github.ref == 'refs/heads/main'
         uses: actions/checkout@v2
 
       - name: Package
-        run: ./mvnw package -P prod
+        if: github.ref == 'refs/heads/main'
+        run: ./mvnw package
 
       - name: Build Docker image
+        if: github.ref == 'refs/heads/main'
         run: docker build . -t $IMAGE_NAME
 
       - name: Push Docker image
+        if: github.ref == 'refs/heads/main'
         run: docker push $IMAGE_NAME
 
       - name: Authenticate
+        if: github.ref == 'refs/heads/main'
         uses: google-github-actions/auth@v0
         with:
           credentials_json: ${{ secrets.GCP_CREDENTIALS }}
@@ -65,6 +72,7 @@ jobs:
             api-key:projects/77751131303/secrets/api-key
             
       - name: Deploy Docker image
+        if: github.ref == 'refs/heads/main'
         run: |
           gcloud run deploy ${{ secrets.GCP_PROJECT_ID }} \
           --image $IMAGE_NAME \
