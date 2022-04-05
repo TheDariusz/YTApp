@@ -1,0 +1,85 @@
+name: Docker
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+
+  deploy:
+
+    name: Setup Gcloud Account
+    runs-on: ubuntu-latest
+    env:
+      IMAGE_NAME: gcr.io/${{ secrets.GCP_PROJECT_ID }}/ytapp
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up JDK
+        uses: actions/setup-java@v1
+        with:
+          java-version: 17
+
+      - name: Test
+        run: ./mvnw verify
+
+      - name: Package
+        run: ./mvnw package
+
+      - name: Login
+        if: github.ref == 'refs/heads/main'
+        uses: google-github-actions/setup-gcloud@v0
+        with:
+          project_id: ${{ secrets.GCP_PROJECT_ID }}
+          service_account_email: ${{ secrets.GCP_EMAIL }}
+          service_account_key: ${{ secrets.GCP_CREDENTIALS }}
+
+      - name: Configure Docker
+        if: github.ref == 'refs/heads/main'
+        run: gcloud auth configure-docker --quiet
+
+      - name: Checkout repository
+        if: github.ref == 'refs/heads/main'
+        uses: actions/checkout@v2
+
+      - name: Package
+        if: github.ref == 'refs/heads/main'
+        run: ./mvnw package
+
+      - name: Build Docker image
+        if: github.ref == 'refs/heads/main'
+        run: docker build . -t $IMAGE_NAME
+
+      - name: Push Docker image
+        if: github.ref == 'refs/heads/main'
+        run: docker push $IMAGE_NAME
+
+      - name: Authenticate
+        if: github.ref == 'refs/heads/main'
+        uses: google-github-actions/auth@v0
+        with:
+          credentials_json: ${{ secrets.GCP_CREDENTIALS }}
+
+      - id: secrets
+        name: Fetch google cloud secrets
+        if: github.ref == 'refs/heads/main'
+        uses: google-github-actions/get-secretmanager-secrets@v0
+        with:
+          secrets: |-
+            client-id:projects/77751131303/secrets/client-id
+            client-secret:projects/77751131303/secrets/client-secret
+            api-key:projects/77751131303/secrets/api-key
+            
+      - name: Deploy Docker image
+        if: github.ref == 'refs/heads/main'
+        run: |
+          gcloud run deploy ${{ secrets.GCP_PROJECT_ID }} \
+          --image $IMAGE_NAME \
+          --region europe-west1 \
+          --platform managed \
+          --set-env-vars SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_GOOGLE_REDIRECT-URI=https://ytapp-339922-crzmcsu6ea-uc.a.run.app/login/oauth2/code/google \
+          --set-env-vars SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_GOOGLE_CLIENT-ID=${{ steps.secrets.outputs.client-id }} \
+          --set-env-vars SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_GOOGLE_CLIENT-SECRET=${{ steps.secrets.outputs.client-secret }} \
+          --set-env-vars MY_YTAPP_APIKEY=${{ steps.secrets.outputs.api-key }}
