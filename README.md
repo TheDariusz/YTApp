@@ -12,7 +12,8 @@ JDK 17, Docker, Thymeleaf, Spring-Boot
 1. Run java main function inside MediaApplication class
 3. Open: [HOME](http://localhost:8080/home)
 
-[//]: # (### Running locally in Docker)
+### Running on server
+[https://ytapp-339922-crzmcsu6ea-ew.a.run.app/home](https://ytapp-339922-crzmcsu6ea-ew.a.run.app/home)
 
 [//]: # (1. Run `./run-in-docker`)
 
@@ -20,10 +21,12 @@ JDK 17, Docker, Thymeleaf, Spring-Boot
 
 ## Deployment
 ### Test environment
-todo
+CI process with  GitHub Actions
 
 ### Production environment
-Google Cloud Platform
+Google Cloud Run on Google Cloud Platform
+
+Deployment through CD process with GitHub Actions  
 
 # Technical debt / TODO
 - [ ] Spotify API handling
