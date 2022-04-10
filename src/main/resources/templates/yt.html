@@ -25,7 +25,7 @@
 <span th:if="${video.prevPageToken()!=null}">
     <a th:href="'/home/yt?page='+${video.prevPageToken()}" id="getPrevVideos">show prev videos</a>
 </span>
-<span>
+<span th:if="${video.nextPageToken()!=null}">
     <a th:href="'/home/yt?page='+${video.nextPageToken()}" id="getNextVideos">get next videos</a>
 </span>
 </p>
